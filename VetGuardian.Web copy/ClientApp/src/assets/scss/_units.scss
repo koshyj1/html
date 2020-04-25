@@ -1,0 +1,32 @@
+@keyframes background-pulse {
+    0% { background-color: $gray }
+    50% { background-color: $light-gray }
+    100% { background-color: $gray }
+}
+
+.units {
+    .card {
+        &.active {
+            border-bottom: 20px solid $card-cap-bg;
+        }
+
+        &.empty {
+            background: #24292D;
+        }
+
+        &.configure {
+            background: none;
+            border: 1px solid $card-cap-bg;
+            border-bottom: 0;
+        }
+
+        &.has-movement {
+            &:not(.active) {
+                animation-name: background-pulse;
+                animation-duration: 4s;
+                animation-iteration-count: infinite;
+                animation-timing-function: ease;
+            }
+        }
+    }
+}

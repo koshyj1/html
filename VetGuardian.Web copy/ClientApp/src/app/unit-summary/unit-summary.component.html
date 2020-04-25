@@ -1,0 +1,37 @@
+<div *ngIf="hasStatus && isOccupied" class="card-header text-uppercase font-weight-light clickable" (click)="onCardClick($event)">
+    <fa-icon class="float-right" [icon]="videoIcon"></fa-icon>
+    <fa-icon *ngIf="hasErrors" class="float-right text-danger mr-1" [icon]="errorIcon" title="An issue with this unit has been detected"></fa-icon>
+    {{petName || '-'}}
+</div>
+<div *ngIf="hasStatus && !isOccupied" class="card-header text-uppercase font-weight-light">
+    <fa-icon class="float-right" [icon]="videoIcon"></fa-icon>
+    <fa-icon *ngIf="hasErrors" class="float-right text-danger mr-1" [icon]="errorIcon" title="An issue with this unit has been detected"></fa-icon>
+    Empty
+</div>
+
+<div *ngIf="hasStatus && isOccupied" class="p-3 clickable" (click)="onCardClick($event)">
+    <div class="row">
+        <div class="col-9">
+            <div class="row">
+                <div class="col-3 pl-0">HR</div>
+                <div class="col-9 p-0 display-4 text-primary text-center">{{heartRate || '-'}}</div>
+            </div>
+            <div class="row">
+                <div class="col-3 pl-0">RR</div>
+                <div class="col-9 p-0 display-4 text-secondary text-center">{{respirationRate || '-'}}</div>
+            </div>
+        </div>
+        <div class="col-3 pr-0 d-flex align-items-end flex-column">
+            <fa-icon class="{{petStatusColor}}" [icon]="petStatusIcon" size="2x"></fa-icon>
+            <div class="mt-auto" [class.text-male]="sex === 1 || sex === 3" [class.text-female]="sex === 2 || sex === 4" style="font-size:2rem">{{sexInitials || '-'}}</div>
+            <fa-icon class="mt-auto" [class.text-male]="sex === 1 || sex === 3" [class.text-female]="sex === 2 || sex === 4" [icon]="speciesIcon" size="2x"></fa-icon>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="hasStatus && !isOccupied" class="p-3 h-100">
+    <div class="d-block h-100 text-center text-uppercase font-weight-light text-white clickable" (click)="onCardClick($event)">
+        Add Patient
+        <fa-icon class="d-block mt-4 text-white-50" [icon]="faPlusSquare" size="5x"></fa-icon>
+    </div>
+</div>

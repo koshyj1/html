@@ -1,0 +1,27 @@
+<fa-icon class="btn btn-sm btn-outline-lighter-gray add-note-btn" [icon]="addIcon" (click)="showModal()"></fa-icon>
+
+<div #container class="log-container">
+    <div *ngFor="let log of logs" class="log-entry log-type-{{log.logType}}">
+        <div class="log-header" [class.text-warning]="log.logType === 3" [class.text-danger]="log.logType === 4">{{log.timestamp | date:'short'}}</div>
+        <div class="log-body">{{log.message}}</div>
+    </div>
+</div>
+
+<div class="modal fade" bsModal #modal="bs-modal"
+      tabindex="-1" role="dialog" aria-labelledby="dialog-events-name"
+      (onHidden)="onAddNoteHidden($event)">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 id="dialog-events-name" class="modal-title pull-left">Add Note</h4>
+                <button type="button" class="close pull-right" aria-label="Close" (click)="modal.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <textarea rows="4" style="width:100%" [(ngModel)]="newNoteText"></textarea>
+                <button class="btn btn-outline-lightest-gray" style="float:right" (click)="createNote()">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>

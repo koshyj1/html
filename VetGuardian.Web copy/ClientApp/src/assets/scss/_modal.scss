@@ -1,0 +1,20 @@
+@import "./variables";
+
+.modal-content {
+    background-color: $card-bg;
+    border: 2px solid #ccc;
+
+    & textarea {
+        background-color: #333;
+        color: #eee;
+    }
+}
+
+.modal-content,
+.close:not(:disabled):not(.disabled), .close:not(:disabled):not(.disabled) {
+    color: #FEFDFD;
+}
+
+.close:not(:disabled):not(.disabled):hover, .close:not(:disabled):not(.disabled):focus {
+    color: #FFFFFF;
+}

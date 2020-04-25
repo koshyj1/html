@@ -1,0 +1,12 @@
+<div class="d-block" style="position:relative;" [style.height]="height">
+  <canvas #chart id="{{id}}"></canvas>
+</div>
+<div *ngIf="motion && !initializing" class="chart-overlay">
+  Motion Detected
+</div>
+<div *ngIf="pause && !initializing" class="chart-overlay">
+  Paused
+</div>
+<div *ngIf="initializing" class="chart-overlay">
+  Initializing...
+</div>

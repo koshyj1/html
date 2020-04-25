@@ -1,0 +1,488 @@
+<div class="modal fade" bsModal #newPatientModal="bs-modal" [config]="{animated: false}" (onHide)="newPatientForm.reset()">
+  <form (ngSubmit)="onNewPatientSubmit()" [formGroup]="newPatientForm">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 id="dialog-static-name" class="modal-title pull-left">New Patient</h4>
+          <button type="button" class="close pull-right" aria-label="Close" (click)="newPatientModal.hide()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label" style="height:auto; display:block">Patient ID</label>
+            <input type="text" placeholder="Patient ID" class="form-control" [class.is-invalid]="newPatientForm.showErrors('patientId')" formControlName="patientId" />
+            <vg-error-display *ngIf="newPatientForm.showErrors('patientId')" class="invalid-feedback" [control]="newPatientForm.getFormControl('patientId')" name="Patient ID"></vg-error-display>
+          </div>
+          <div class="row">
+
+            <div class="col">
+              <div class="form-group">
+                <label class="form-label" style="height:auto; display:block">Pet Name</label>
+                <input type="text" placeholder="Pet Name" class="form-control" [class.is-invalid]="newPatientForm.showErrors('name')" formControlName="name" />
+                <vg-error-display *ngIf="newPatientForm.showErrors('name')" class="invalid-feedback " [control]="newPatientForm.getFormControl('name')" name="Pet Name"></vg-error-display>
+              </div>
+              <div class="form-group">
+                <label class="form-label" style="height:auto; display:block">Species</label>
+                <select class="form-control" [class.is-invalid]="newPatientForm.showErrors('species')" formControlName="species" (change)="fillSpeciesDefaults($event, newPatientForm)">
+                  <option value="null" disabled>Species</option>
+                  <option *ngFor="let s of species" [value]="s.id">{{s.name}}</option>
+                </select>
+                <vg-error-display *ngIf="newPatientForm.showErrors('species')" class="invalid-feedback" [control]="newPatientForm.getFormControl('species')" name="Species"></vg-error-display>
+              </div>
+              <div class="form-group">
+                <label class="form-label" style="height:auto; display:block">Breed</label>
+                <input class="form-control" [class.is-invalid]="newPatientForm.showErrors('breed')" type="text" placeholder="Breed" formControlName="breed" />
+                <vg-error-display *ngIf="newPatientForm.showErrors('breed')" class="invalid-feedback" [control]="newPatientForm.getFormControl('breed')" name="Breed"></vg-error-display>
+              </div>
+
+            </div>
+
+            <div class="col">
+              <div class="form-group">
+                <label class="form-label" style="height:auto; display:block">Owner Name</label>
+                <input type="text" placeholder="Owner Name" class="form-control" [class.is-invalid]="newPatientForm.showErrors('ownerName')" formControlName="ownerName" />
+                <vg-error-display *ngIf="newPatientForm.showErrors('ownerName')" class="invalid-feedback " [control]="newPatientForm.getFormControl('ownerName')" name="Owner Name"></vg-error-display>
+              </div>
+              <div class="form-group">
+                <label class="form-label" style="height:auto; display:block">Sex</label>
+                <select class="form-control" [class.is-invalid]="newPatientForm.showErrors('sex')" formControlName="sex">
+                  <option value="null" disabled>Sex</option>
+                  <option *ngFor="let s of sexes" [value]="s.id">{{s.name}}</option>
+                </select>
+                <vg-error-display *ngIf="newPatientForm.showErrors('sex')" class="invalid-feedback" [control]="newPatientForm.getFormControl('sex')" name="Sex"></vg-error-display>
+              </div>
+              <div class="form-group">
+                <label class="form-label" style="height:auto; display:block">Birth Date</label>
+                <input class="form-control" [class.is-invalid]="newPatientForm.showErrors('birthDate')" type="date" placeholder="Birth Date" formControlName="birthDate" />
+                <vg-error-display *ngIf="newPatientForm.showErrors('birthDate')" class="invalid-feedback" [control]="newPatientForm.getFormControl('birthDate')" name="Birth Date"></vg-error-display>
+              </div>
+
+              <label style="height:auto; display:block">Weight</label>
+              <div class="input-group">
+                <input class="info-input form-control" [class.is-invalid]="newPatientForm.showErrors('weight')" type="number" min="0" step="0.25" placeholder="Weight" formControlName="weight" />
+                <div class="input-group-append">
+                    <button type="button" class="btn btn-outline-primary" [ngClass]="{'active': weightUnit == unit }" (click)="setNewWeightUnit(unit)" tabindex="0" role="button" *ngFor="let unit of weightUnits">{{unit.initials}}</button>
+                </div>
+                <vg-error-display *ngIf="newPatientForm.showErrors('weight')" class="invalid-feedback" [control]="newPatientForm.getFormControl('weight')" name="Weight"></vg-error-display>
+              </div>
+              
+            </div>
+
+          </div>
+          
+          <div class="limits">
+            <div class="row threshold-inputs pb-3" style="border-bottom: 1px solid #303030">
+              <div class="col-1 text-center">
+                <h5 class="mb-0 mt-3">HR</h5>
+                <fa-icon class="text-primary" [icon]="circleIcon"></fa-icon>
+              </div>
+              <div class="col-5">
+                <div class="row">
+                  <div class="col-6">
+                    <label for="hr-low-alarm">Low Alarm</label>
+                    <input id="hr-low-alarm" type="number" min="1" max="999" step="1" class="text-danger form-control" [class.is-invalid]="newPatientForm.showErrors('heartRateLowAlarm')" formControlName="heartRateLowAlarm" />
+                    <vg-error-display *ngIf="newPatientForm.showErrors('heartRateLowAlarm')" class="invalid-feedback" [control]="newPatientForm.getFormControl('heartRateLowAlarm')" name="Heart Rate Low Alarm"></vg-error-display>
+                  </div>
+                  <div class="col-6">
+                    <label for="hr-low-warning">Low Warning</label>
+                    <input id="hr-low-warning" type="number" min="1" max="999" step="1" class="text-warning form-control" [class.is-invalid]="newPatientForm.showErrors('heartRateLowWarning')" formControlName="heartRateLowWarning" />
+                    <vg-error-display *ngIf="newPatientForm.showErrors('heartRateLowWarning')" class="invalid-feedback" [control]="newPatientForm.getFormControl('heartRateLowWarning')" name="Heart Rate Low Warning"></vg-error-display>
+                  </div>
+                </div>
+              </div>
+              <div class="col-5 offset-1">
+                <div class="row">
+                  <div class="col-6">
+                    <label for="hr-high-warning">High Warning</label>
+                    <input id="hr-high-warning" type="number" min="1" max="999" step="1" class="text-warning form-control" [class.is-invalid]="newPatientForm.showErrors('heartRateHighWarning')" formControlName="heartRateHighWarning" />
+                    <vg-error-display *ngIf="newPatientForm.showErrors('heartRateHighWarning')" class="invalid-feedback" [control]="newPatientForm.getFormControl('heartRateHighWarning')" name="Heart Rate High Warning"></vg-error-display>
+                  </div>
+                  <div class="col-6">
+                    <label for="hr-high-alarm">High Alarm</label>
+                    <input id="hr-high-alarm" type="number" min="1" max="999" step="1" class="text-danger form-control" [class.is-invalid]="newPatientForm.showErrors('heartRateHighAlarm')" formControlName="heartRateHighAlarm" />
+                    <vg-error-display *ngIf="newPatientForm.showErrors('heartRateHighAlarm')" class="invalid-feedback" [control]="newPatientForm.getFormControl('heartRateHighAlarm')" name="Heart Rate High Alarm"></vg-error-display>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row threshold-inputs pt-1">
+              <div class="col-1 text-center">
+                <h5 class="mb-0 mt-3">RR</h5>
+                <fa-icon class="text-secondary" [icon]="circleIcon"></fa-icon>
+              </div>
+              <div class="col-5">
+                <div class="row">
+                  <div class="col-6">
+                    <label for="rr-low-alarm">Low Alarm</label>
+                    <input id="rr-low-alarm" type="number" min="1" max="999" step="1" class="text-danger form-control" [class.is-invalid]="newPatientForm.showErrors('respirationRateLowAlarm')" formControlName="respirationRateLowAlarm" />
+                    <vg-error-display *ngIf="newPatientForm.showErrors('respirationRateLowAlarm')" class="invalid-feedback" [control]="newPatientForm.getFormControl('respirationRateLowAlarm')" name="Respiration Rate Low Alarm"></vg-error-display>
+                  </div>
+                  <div class="col-6">
+                    <label for="rr-low-warning">Low Warning</label>
+                    <input id="rr-low-warning" type="number" min="1" max="999" step="1" class="text-warning form-control" [class.is-invalid]="newPatientForm.showErrors('respirationRateLowWarning')" formControlName="respirationRateLowWarning" />
+                    <vg-error-display *ngIf="newPatientForm.showErrors('respirationRateLowWarning')" class="invalid-feedback" [control]="newPatientForm.getFormControl('respirationRateLowWarning')" name="Respiration Rate Low Warning"></vg-error-display>
+                  </div>
+                </div>
+              </div>
+              <div class="col-5 offset-1">
+                <div class="row">
+                  <div class="col-6">
+                    <label for="rr-high-warning">High Warning</label>
+                    <input id="rr-high-warning" type="number" min="1" max="999" step="1" class="text-warning form-control" [class.is-invalid]="newPatientForm.showErrors('respirationRateHighWarning')" formControlName="respirationRateHighWarning" />
+                    <vg-error-display *ngIf="newPatientForm.showErrors('respirationRateHighWarning')" class="invalid-feedback" [control]="newPatientForm.getFormControl('respirationRateHighWarning')" name="Respiration Rate High Warning"></vg-error-display>
+                  </div>
+                  <div class="col-6">
+                    <label for="rr-high-alarm">High Alarm</label>
+                    <input id="rr-high-alarm" type="number" min="1" max="999" step="1" class="text-danger form-control" [class.is-invalid]="newPatientForm.showErrors('respirationRateHighAlarm')" formControlName="respirationRateHighAlarm" />
+                    <vg-error-display *ngIf="newPatientForm.showErrors('respirationRateHighAlarm')" class="invalid-feedback" [control]="newPatientForm.getFormControl('respirationRateHighAlarm')" name="Respiration Rate High Alarm"></vg-error-display>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" (click)="newPatientModal.hide()">Cancel</button>
+          <button type="submit" [disabled]="!newPatientForm.valid" class="btn btn-outline-primary">Submit</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="modal fade" bsModal #editPatientModal="bs-modal" [config]="{animated: false}">
+  <form (ngSubmit)="onEditPatientSubmit()" [formGroup]="editPatientForm">
+    <div class="modal-dialog modal-lg" *ngIf="selectedPatient">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 id="dialog-static-name" class="modal-title pull-left">Patient Information - {{selectedPatient.patientId}}</h4>
+          <button type="button" class="close pull-right" aria-label="Close" (click)="editPatientModal.hide()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <label class="form-label" style="height:auto; display:block">Pet Name</label>
+                <input type="text" placeholder="Pet Name" class="form-control" [class.is-invalid]="editPatientForm.showErrors('name')" formControlName="name" />
+                <vg-error-display *ngIf="editPatientForm.showErrors('name')" class="invalid-feedback " [control]="editPatientForm.getFormControl('name')" name="Pet Name"></vg-error-display>
+              </div>
+              <div class="form-group">
+                <label class="form-label" style="height:auto; display:block">Species</label>
+                <select class="form-control" [class.is-invalid]="editPatientForm.showErrors('species')" formControlName="species" (change)="fillSpeciesDefaults($event, editPatientForm)">
+                  <option value="null" disabled>Species</option>
+                  <option *ngFor="let s of species" [value]="s.id">{{s.name}}</option>
+                </select>
+                <vg-error-display *ngIf="editPatientForm.showErrors('species')" class="invalid-feedback" [control]="editPatientForm.getFormControl('species')" name="Species"></vg-error-display>
+              </div>
+              <div class="form-group">
+                <label class="form-label" style="height:auto; display:block">Breed</label>
+                <input class="form-control" [class.is-invalid]="editPatientForm.showErrors('breed')" type="text" placeholder="Breed" formControlName="breed" />
+                <vg-error-display *ngIf="editPatientForm.showErrors('breed')" class="invalid-feedback" [control]="editPatientForm.getFormControl('breed')" name="Breed"></vg-error-display>
+              </div>
+
+            </div>
+            
+            <div class="col">
+              <div class="form-group">
+                <label class="form-label" style="height:auto; display:block">Owner Name</label>
+                <input type="text" placeholder="Owner Name" class="form-control" [class.is-invalid]="editPatientForm.showErrors('ownerName')" formControlName="ownerName" />
+                <vg-error-display *ngIf="editPatientForm.showErrors('ownerName')" class="invalid-feedback " [control]="editPatientForm.getFormControl('ownerName')" name="Owner Name"></vg-error-display>
+              </div>
+              <div class="form-group">
+                <label class="form-label" style="height:auto; display:block">Sex</label>
+                <select class="form-control" [class.is-invalid]="editPatientForm.showErrors('sex')" formControlName="sex">
+                  <option value="null" disabled>Sex</option>
+                  <option *ngFor="let s of sexes" [value]="s.id">{{s.name}}</option>
+                </select>
+                <vg-error-display *ngIf="editPatientForm.showErrors('sex')" class="invalid-feedback" [control]="editPatientForm.getFormControl('sex')" name="Sex"></vg-error-display>
+              </div>
+              <div class="form-group">
+                <label class="form-label" style="height:auto; display:block">Birth Date</label>
+                <input class="form-control" [class.is-invalid]="editPatientForm.showErrors('birthDate')" type="date" placeholder="Birth Date" formControlName="birthDate" />
+                <vg-error-display *ngIf="editPatientForm.showErrors('birthDate')" class="invalid-feedback" [control]="editPatientForm.getFormControl('birthDate')" name="Birth Date"></vg-error-display>
+              </div>
+
+              <label style="height:auto; display:block">Weight</label>
+              <div class="input-group">
+                <input class="info-input form-control" [class.is-invalid]="newPatientForm.showErrors('weight')" type="number" min="0" step="0.25" placeholder="Weight" formControlName="weight" />
+                <div class="input-group-append">
+                    <button type="button" class="btn btn-outline-primary" [ngClass]="{'active': weightUnit == unit }" (click)="setWeightUnit(unit)" tabindex="0" role="button" *ngFor="let unit of weightUnits">{{unit.initials}}</button>
+                </div>
+                <vg-error-display *ngIf="newPatientForm.showErrors('weight')" class="invalid-feedback" [control]="newPatientForm.getFormControl('weight')" name="Weight"></vg-error-display>
+              </div>
+
+            </div>
+          </div>
+          <div class="limits">
+            <div class="row threshold-inputs pb-3" style="border-bottom: 1px solid #303030">
+              <div class="col-1 text-center">
+                <h5 class="mb-0 mt-3">HR</h5>
+                <fa-icon class="text-primary" [icon]="circleIcon"></fa-icon>
+              </div>
+              <div class="col-5">
+                <div class="row">
+                  <div class="col-6">
+                    <label for="hr-low-alarm">Low Alarm</label>
+                    <input id="hr-low-alarm" type="number" min="1" max="999" step="1" class="text-danger form-control" [class.is-invalid]="editPatientForm.showErrors('heartRateLowAlarm')" formControlName="heartRateLowAlarm" />
+                    <vg-error-display *ngIf="editPatientForm.showErrors('heartRateLowAlarm')" class="invalid-feedback" [control]="editPatientForm.getFormControl('heartRateLowAlarm')" name="Heart Rate Low Alarm"></vg-error-display>
+                  </div>
+                  <div class="col-6">
+                    <label for="hr-low-warning">Low Warning</label>
+                    <input id="hr-low-warning" type="number" min="1" max="999" step="1" class="text-warning form-control" [class.is-invalid]="editPatientForm.showErrors('heartRateLowWarning')" formControlName="heartRateLowWarning" />
+                    <vg-error-display *ngIf="editPatientForm.showErrors('heartRateLowWarning')" class="invalid-feedback" [control]="editPatientForm.getFormControl('heartRateLowWarning')" name="Heart Rate Low Warning"></vg-error-display>
+                  </div>
+                </div>
+              </div>
+              <div class="col-5 offset-1">
+                <div class="row">
+                  <div class="col-6">
+                    <label for="hr-high-warning">High Warning</label>
+                    <input id="hr-high-warning" type="number" min="1" max="999" step="1" class="text-warning form-control" [class.is-invalid]="editPatientForm.showErrors('heartRateHighWarning')" formControlName="heartRateHighWarning" />
+                    <vg-error-display *ngIf="editPatientForm.showErrors('heartRateHighWarning')" class="invalid-feedback" [control]="editPatientForm.getFormControl('heartRateHighWarning')" name="Heart Rate High Warning"></vg-error-display>
+                  </div>
+                  <div class="col-6">
+                    <label for="hr-high-alarm">High Alarm</label>
+                    <input id="hr-high-alarm" type="number" min="1" max="999" step="1" class="text-danger form-control" [class.is-invalid]="editPatientForm.showErrors('heartRateHighAlarm')" formControlName="heartRateHighAlarm" />
+                    <vg-error-display *ngIf="editPatientForm.showErrors('heartRateHighAlarm')" class="invalid-feedback" [control]="editPatientForm.getFormControl('heartRateHighAlarm')" name="Heart Rate High Alarm"></vg-error-display>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row threshold-inputs pt-1">
+              <div class="col-1 text-center">
+                <h5 class="mb-0 mt-3">RR</h5>
+                <fa-icon class="text-secondary" [icon]="circleIcon"></fa-icon>
+              </div>
+              <div class="col-5">
+                <div class="row">
+                  <div class="col-6">
+                    <label for="rr-low-alarm">Low Alarm</label>
+                    <input id="rr-low-alarm" type="number" min="1" max="999" step="1" class="text-danger form-control" [class.is-invalid]="editPatientForm.showErrors('respirationRateLowAlarm')" formControlName="respirationRateLowAlarm" />
+                    <vg-error-display *ngIf="editPatientForm.showErrors('respirationRateLowAlarm')" class="invalid-feedback" [control]="editPatientForm.getFormControl('respirationRateLowAlarm')" name="Respiration Rate Low Alarm"></vg-error-display>
+                  </div>
+                  <div class="col-6">
+                    <label for="rr-low-warning">Low Warning</label>
+                    <input id="rr-low-warning" type="number" min="1" max="999" step="1" class="text-warning form-control" [class.is-invalid]="editPatientForm.showErrors('respirationRateLowWarning')" formControlName="respirationRateLowWarning" />
+                    <vg-error-display *ngIf="editPatientForm.showErrors('respirationRateLowWarning')" class="invalid-feedback" [control]="editPatientForm.getFormControl('respirationRateLowWarning')" name="Respiration Rate Low Warning"></vg-error-display>
+                  </div>
+                </div>
+              </div>
+              <div class="col-5 offset-1">
+                <div class="row">
+                  <div class="col-6">
+                    <label for="rr-high-warning">High Warning</label>
+                    <input id="rr-high-warning" type="number" min="1" max="999" step="1" class="text-warning form-control" [class.is-invalid]="editPatientForm.showErrors('respirationRateHighWarning')" formControlName="respirationRateHighWarning" />
+                    <vg-error-display *ngIf="editPatientForm.showErrors('respirationRateHighWarning')" class="invalid-feedback" [control]="editPatientForm.getFormControl('respirationRateHighWarning')" name="Respiration Rate High Warning"></vg-error-display>
+                  </div>
+                  <div class="col-6">
+                    <label for="rr-high-alarm">High Alarm</label>
+                    <input id="rr-high-alarm" type="number" min="1" max="999" step="1" class="text-danger form-control" [class.is-invalid]="editPatientForm.showErrors('respirationRateHighAlarm')" formControlName="respirationRateHighAlarm" />
+                    <vg-error-display *ngIf="editPatientForm.showErrors('respirationRateHighAlarm')" class="invalid-feedback" [control]="editPatientForm.getFormControl('respirationRateHighAlarm')" name="Respiration Rate High Alarm"></vg-error-display>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" (click)="editPatientModal.hide()">Cancel</button>
+          <button type="submit" [disabled]="!editPatientForm.valid" class="btn btn-outline-primary">Submit</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<ng-template #patientIdTemplate let-model="item" let-index="index">
+  <h5>{{model.patientId || 'N/A'}} ({{model.name}})</h5>
+</ng-template>
+
+<form (ngSubmit)="onSubmit()" [formGroup]="form">
+  <div class="status-bar">
+    <div class="row p-3">
+      <div class="col-2">
+        <h2 class="text-uppercase mt-3">
+          <fa-icon class="{{petStatusColor}}" [icon]="petStatusIcon"></fa-icon> {{petStatusText || '-'}}
+        </h2>
+      </div>
+
+      <div class="col-6">
+        <div class="input-group input-group-lg m-3">
+          <input type="text" class="form-control"
+                 placeholder="Enter Patient ID"
+                 formControlName="patientId"
+                 [customTypeahead]="patients"
+                 [typeaheadItemTemplate]="patientIdTemplate"
+                 [typeaheadSearchFields]="['patientId', 'name']"
+                 [typeaheadMinLength]="2"
+                 typeaheadOptionsLimit="5"
+                 (typeaheadOnSelect)="selectPatient($event.item)"
+                 (blur)="onPatientIdBlur()" />
+
+          <div class="input-group-append">
+            <button class="btn btn-outline-primary" [disabled]="!selectedPatient" type="button" (click)="editPatientModal.show()"><fa-icon [icon]="editIcon"></fa-icon> Edit</button>
+            <button class="btn btn-outline-secondary" type="button" (click)="newPatientModal.show()"><fa-icon [icon]="addIcon"></fa-icon> New</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-1 offset-1">
+        <strong class="text-white-50 text-uppercase text-bold d-block">Time</strong>
+        <h3 class="font-weight-light">{{runTime}}</h3>
+      </div>
+      <div class="col-1">
+        <strong class="text-white-50 text-uppercase text-bold d-block">Unit Name</strong>
+        <h3 class="font-weight-light">{{unitName || '-'}}</h3>
+      </div>
+      <div class="col-1">
+        <button type="submit" [disabled]="!selectedPatient || !form.valid" class="btn btn-outline-primary btn-block btn-lg mt-2">Start</button>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="bg-gray">
+    <div class="row">
+      <div class="col-8">
+        <div class="row">
+          <div class="col-3 pl-4">
+
+            <div class="p-2">
+                <label for="weight" class="info-input" style="height:auto; display:block">Weight</label>
+                <div class="input-group">
+                  <input id="weight" class="info-input form-control" [class.is-invalid]="form.showErrors('weight')" type="number" min="0" step="0.25" formControlName="weight" />
+                  <div class="input-group-append">
+                      <button type="button" class="btn btn-outline-primary" [ngClass]="{'active': weightUnit == unit }" (click)="setWeightUnit(unit)" tabindex="0" role="button" *ngFor="let unit of weightUnits">{{unit.initials}}</button>
+                  </div>
+
+                  <vg-error-display *ngIf="form.showErrors('weight')" class="invalid-feedback" [control]="form.getFormControl('weight')" name="Weight"></vg-error-display>
+                </div>
+            </div>
+
+            <br />
+
+            <div class="pl-2 pr-2">
+                <label for="temperature" class="info-input" style="height:auto; display:block">Temperature</label>
+                <div class="input-group">
+                    <input id="temperature" class="info-input form-control" [class.is-invalid]="form.showErrors('temperature')" type="number" min="0" max="999" step="0.1" formControlName="temperature" />
+                    <div class="input-group-append">
+                        <button type="button" class="btn btn-outline-primary" [ngClass]="{'active': temperatureUnit == unit }" (click)="setTempUnit(unit)" tabindex="0" role="button" *ngFor="let unit of temperatureUnits">{{unit.initials}}</button>
+                    </div>
+
+                    <vg-error-display *ngIf="form.showErrors('temperature')" class="invalid-feedback" [control]="form.getFormControl('temperature')" name="Temperature"></vg-error-display>
+                </div>
+            </div>
+            
+            <div class="pl-2 pr-2">
+              <label for="heartrate" class="info-input" style="height:auto; display:block">Heartrate</label>
+              <input id="heartrate" class="info-input form-control" [class.is-invalid]="form.showErrors('heartrate')" type="number" min="0" max="999" step="1" formControlName="heartrate" />
+              <vg-error-display *ngIf="form.showErrors('heartrate')" class="invalid-feedback" [control]="form.getFormControl('heartrate')" name="Heartrate"></vg-error-display>
+            </div>
+            <div class="pl-2 pr-2">
+              <label for="respirationrate" class="info-input" style="height:auto; display:block">Respiration Rate</label>
+              <input id="respirationrate" class="info-input form-control" [class.is-invalid]="form.showErrors('respirationrate')" type="number" min="0" max="999" step="1" formControlName="respirationrate" />
+              <vg-error-display *ngIf="form.showErrors('respirationrate')" class="invalid-feedback" [control]="form.getFormControl('respirationrate')" name="Respiration Rate"></vg-error-display>
+            </div>
+
+            <div class="pl-2 pr-2">
+                <label class="info-input" for="attendingDoctorId" style="height:auto; display:block">Attending Doctor</label>
+                <select class="info-input form-control" id="attendingDoctorId" formControlName="attendingDoctorId"  [class.is-invalid]="form.showErrors('attendingDoctorId')">
+                    <option [value]="null">Select</option>
+                    <option *ngFor="let staff of attendingDoctors" [value]="staff.id">{{staff.firstName}} {{staff.lastName}}</option>
+                </select>
+                <vg-error-display *ngIf="form.showErrors('attendingDoctorId')" class="invalid-feedback" [control]="form.getFormControl('attendingDoctorId')" name="Attending Doctor"></vg-error-display>
+            </div>
+            <div class="pl-2 pr-2">
+                <label class="info-input" for="vetTechId" style="height:auto; display:block">Vet Tech</label>
+                <select class="info-input form-control" id="vetTechId" formControlName="vetTechId"  [class.is-invalid]="form.showErrors('vetTechId')">
+                    <option [value]="null">Select</option>
+                    <option *ngFor="let staff of vetTechs" [value]="staff.id">{{staff.firstName}} {{staff.lastName}}</option>
+                </select>
+                <vg-error-display *ngIf="form.showErrors('vetTechId')" class="invalid-feedback" [control]="form.getFormControl('vetTechId')" name="Vet Tech"></vg-error-display>
+            </div>
+          </div>
+
+          <div class="col-9">
+            <div class="row threshold-inputs pb-3" style="border-bottom: 1px solid #303030">
+              <div class="col-1 text-center">
+                <h5 class="mb-0 mt-3">HR</h5>
+                <fa-icon class="text-primary" [icon]="circleIcon"></fa-icon>
+              </div>
+              <div class="col-5">
+                <div class="row">
+                  <div class="col-6">
+                    <label for="hr-low-alarm">Low Alarm</label>
+                    <input disabled="disabled" id="hr-low-alarm" type="number" min="1" max="999" step="1" class="text-danger form-control" [class.is-invalid]="form.showErrors('heartRateLowAlarm')" formControlName="heartRateLowAlarm" />
+                    <vg-error-display *ngIf="form.showErrors('heartRateLowAlarm')" class="invalid-feedback" [control]="form.getFormControl('heartRateLowAlarm')" name="Heart Rate Low Alarm"></vg-error-display>
+                  </div>
+                  <div class="col-6">
+                    <label for="hr-low-warning">Low Warning</label>
+                    <input disabled="disabled" id="hr-low-warning" type="number" min="1" max="999" step="1" class="text-warning form-control" [class.is-invalid]="form.showErrors('heartRateLowWarning')" formControlName="heartRateLowWarning" />
+                    <vg-error-display *ngIf="form.showErrors('heartRateLowWarning')" class="invalid-feedback" [control]="form.getFormControl('heartRateLowWarning')" name="Heart Rate Low Warning"></vg-error-display>
+                  </div>
+                </div>
+              </div>
+              <div class="col-5 offset-1">
+                <div class="row">
+                  <div class="col-6">
+                    <label for="hr-high-warning">High Warning</label>
+                    <input disabled="disabled" id="hr-high-warning" type="number" min="1" max="999" step="1" class="text-warning form-control" [class.is-invalid]="form.showErrors('heartRateHighWarning')" formControlName="heartRateHighWarning" />
+                    <vg-error-display *ngIf="form.showErrors('heartRateHighWarning')" class="invalid-feedback" [control]="form.getFormControl('heartRateHighWarning')" name="Heart Rate High Warning"></vg-error-display>
+                  </div>
+                  <div class="col-6">
+                    <label for="hr-high-alarm">High Alarm</label>
+                    <input disabled="disabled" id="hr-high-alarm" type="number" min="1" max="999" step="1" class="text-danger form-control" [class.is-invalid]="form.showErrors('heartRateHighAlarm')" formControlName="heartRateHighAlarm" />
+                    <vg-error-display *ngIf="form.showErrors('heartRateHighAlarm')" class="invalid-feedback" [control]="form.getFormControl('heartRateHighAlarm')" name="Heart Rate High Alarm"></vg-error-display>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row threshold-inputs pt-1">
+              <div class="col-1 text-center">
+                <h5 class="mb-0 mt-3">RR</h5>
+                <fa-icon class="text-secondary" [icon]="circleIcon"></fa-icon>
+              </div>
+              <div class="col-5">
+                <div class="row">
+                  <div class="col-6">
+                    <label for="rr-low-alarm">Low Alarm</label>
+                    <input disabled="disabled" id="rr-low-alarm" type="number" min="1" max="999" step="1" class="text-danger form-control" [class.is-invalid]="form.showErrors('respirationRateLowAlarm')" formControlName="respirationRateLowAlarm" />
+                    <vg-error-display *ngIf="form.showErrors('respirationRateLowAlarm')" class="invalid-feedback" [control]="form.getFormControl('respirationRateLowAlarm')" name="Respiration Rate Low Alarm"></vg-error-display>
+                  </div>
+                  <div class="col-6">
+                    <label for="rr-low-warning">Low Warning</label>
+                    <input disabled="disabled" id="rr-low-warning" type="number" min="1" max="999" step="1" class="text-warning form-control" [class.is-invalid]="form.showErrors('respirationRateLowWarning')" formControlName="respirationRateLowWarning" />
+                    <vg-error-display *ngIf="form.showErrors('respirationRateLowWarning')" class="invalid-feedback" [control]="form.getFormControl('respirationRateLowWarning')" name="Respiration Rate Low Warning"></vg-error-display>
+                  </div>
+                </div>
+              </div>
+              <div class="col-5 offset-1">
+                <div class="row">
+                  <div class="col-6">
+                    <label for="rr-high-warning">High Warning</label>
+                    <input disabled="disabled" id="rr-high-warning" type="number" min="1" max="999" step="1" class="text-warning form-control" [class.is-invalid]="form.showErrors('respirationRateHighWarning')" formControlName="respirationRateHighWarning" />
+                    <vg-error-display *ngIf="form.showErrors('respirationRateHighWarning')" class="invalid-feedback" [control]="form.getFormControl('respirationRateHighWarning')" name="Respiration Rate High Warning"></vg-error-display>
+                  </div>
+                  <div class="col-6">
+                    <label for="rr-high-alarm">High Alarm</label>
+                    <input disabled="disabled" id="rr-high-alarm" type="number" min="1" max="999" step="1" class="text-danger form-control" [class.is-invalid]="form.showErrors('respirationRateHighAlarm')" formControlName="respirationRateHighAlarm" />
+                    <vg-error-display *ngIf="form.showErrors('respirationRateHighAlarm')" class="invalid-feedback" [control]="form.getFormControl('respirationRateHighAlarm')" name="Respiration Rate High Alarm"></vg-error-display>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-4">
+        <vg-video-stream [unitId]="unitId" [videoEnabled]="videoEnabled"></vg-video-stream>
+      </div>
+    </div>
+  </div>
+
+</form>

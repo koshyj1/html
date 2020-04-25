@@ -1,0 +1,52 @@
+<form (ngSubmit)="onSubmit()" [formGroup]="form">
+    <div class="bg-gray">
+
+        <h3 *ngIf="unitId" class="pl-2 pr-2">Configure Unit</h3>
+        <h3 *ngIf="!unitId" class="pl-2 pr-2">Add New Unit</h3>
+        <div class="row">
+            <div class="col-12">
+                <div class="p-2">
+                    <label for="unit-name">Name</label>
+                    <input id="unit-name" type="text" class="form-control" [class.is-invalid]="form.showErrors('name')" formControlName="name" [attr.disabled]="disableInput ? true : null" />
+                    <vg-error-display *ngIf="form.showErrors('name')" class="invalid-feedback" [control]="form.getFormControl('name')" name="Name"></vg-error-display>
+                </div>
+                <div class="p-2">
+                    <label for="camera-hostname">Camera Hostname</label>
+                    <input id="camera-hostname" type="text" class="form-control" [class.is-invalid]="form.showErrors('cameraHostname')" formControlName="cameraHostname" [attr.disabled]="disableInput ? true : null" />
+                    <vg-error-display *ngIf="form.showErrors('cameraHostname')" class="invalid-feedback" [control]="form.getFormControl('cameraHostname')" name="Camera Hostname"></vg-error-display>
+                </div>
+                <div class="p-2">
+                    <label for="camera-username">Camera Username</label>
+                    <input id="camera-username" type="text" class="form-control" [class.is-invalid]="form.showErrors('cameraUsername')" formControlName="cameraUsername" [attr.disabled]="disableInput ? true : null" />
+                    <vg-error-display *ngIf="form.showErrors('cameraUsername')" class="invalid-feedback" [control]="form.getFormControl('cameraUsername')" name="Camera Username"></vg-error-display>
+                </div>
+                <div class="p-2">
+                    <label for="camera-password">Camera Password</label>
+                    <input id="camera-password" type="text" class="form-control" [class.is-invalid]="form.showErrors('cameraPassword')" formControlName="cameraPassword" [attr.disabled]="disableInput ? true : null" />
+                    <vg-error-display *ngIf="form.showErrors('cameraPassword')" class="invalid-feedback" [control]="form.getFormControl('cameraPassword')" name="Camera Password"></vg-error-display>
+                </div>
+                <div class="p-2">
+                    <label for="sensor-ip">Sensor IP Address</label>
+                    <input id="sensor-ip" type="text" class="form-control" [class.is-invalid]="form.showErrors('sensorIpAddress')" formControlName="sensorIpAddress" [attr.disabled]="disableInput ? true : null" />
+                    <vg-error-display *ngIf="form.showErrors('sensorIpAddress')" class="invalid-feedback" [control]="form.getFormControl('sensorIpAddress')" name="Sensor IP Address"></vg-error-display>
+                </div>
+                <div class="p-2">
+                    <label for="serial-number">Serial Number</label>
+                    <input id="serial-number" type="number" min="0" class="form-control" [class.is-invalid]="form.showErrors('serialNumber')" formControlName="serialNumber" [attr.disabled]="disableInput ? true : null" />
+                    <vg-error-display *ngIf="form.showErrors('serialNumber')" class="invalid-feedback" [control]="form.getFormControl('serialNumber')" name="Serial Number"></vg-error-display>
+                </div>
+                <div *ngIf="showSimulateDataToggle" class="p-2">
+                    <label for="unit-simulate">Simulate Data</label>
+                    <input id="unit-simulate" type="checkbox" class="form-control" [class.is-invalid]="form.showErrors('simulate')" formControlName="simulate" [attr.disabled]="disableInput ? true : null" />
+                    <vg-error-display *ngIf="form.showErrors('simulate')" class="invalid-feedback" [control]="form.getFormControl('simulate')" name="Simulate Data"></vg-error-display>
+                </div>
+                <div class="p-2">
+                    <button type="submit" class="btn btn-outline-lightest-gray btn-block btn-lg" [attr.disabled]="disableInput ? true : null">Save</button>
+                </div>
+                <div *ngIf="unitId" class="p-2">
+                    <button type="button" class="btn btn-outline-danger btn-block btn-lg" (click)="deleteUnit()">Delete Unit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

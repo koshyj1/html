@@ -1,0 +1,6 @@
+<vg-unit-monitor *ngIf="unitSummary && isOccupied && isAcquiring" [unitId]="unitSummary.unitId"></vg-unit-monitor>
+<vg-add-patient *ngIf="unitSummary && !isOccupied" [unitId]="unitSummary.unitId" [runId]="runId" [patientId]="patientId"></vg-add-patient>
+<vg-unit-review *ngIf="unitSummary && isOccupied && !isAcquiring" [unitId]="unitSummary.unitId"></vg-unit-review>
+
+<h1 *ngIf="!unitId">Select a unit</h1>
+<h1 *ngIf="unitId && !unitSummary">Loading...</h1>

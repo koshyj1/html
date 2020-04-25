@@ -1,0 +1,304 @@
+<vg-unit-status-bar [runTime]="runTime" [unitName]="unitName" [unitStatus]="unitStatus" [patient]="patient" (acknowledgeAlarm)="acknowledgeAlarm()"></vg-unit-status-bar>
+
+<div class="overlay d-flex justify-content-center" *ngIf="paused">
+    <div class="card overlay-card updateRangePrompt" *ngIf="displayPauseOption">
+        <h4 class="card-header">Update Limits?</h4>
+        <div class="card-body">
+            <p>Do you want to update the heart and/or respiration rate ranges?</p>
+        </div>
+        <div class="card-footer">
+            <button type="button" class="btn btn btn-outline-secondary text-center m-auto float-left" (click)="onUpdateLimitForm(false)">No</button>
+            <button type="button" class="btn btn btn-outline-primary text-center m-auto float-right" (click)="onUpdateLimitForm(true)">Yes</button>
+        </div>
+    </div>
+
+    <form (ngSubmit)="startRun()" [formGroup]="pauseForm" *ngIf="!displayPauseOption">
+        <div class="card overlay-card">
+            <h4 class="card-header">Limits</h4>
+            <div class="card-body">
+                <div class="limits">
+                    <div class="row threshold-inputs pb-3" style="border-bottom: 1px solid #303030">
+                        <div class="col-1 text-center">
+                            <h5 class="mb-0 mt-3">HR</h5>
+                            <fa-icon class="text-primary" [icon]="circleIcon"></fa-icon>
+                        </div>
+                        <div class="col-5">
+                            <div class="row">
+                                <div class="col-6">
+                                    <label for="hr-low-alarm">Low Alarm</label>
+                                    <input id="hr-low-alarm" type="number" min="1" max="999" step="1" class="text-danger form-control" [class.is-invalid]="pauseForm.showErrors('heartRateLowAlarm')" formControlName="heartRateLowAlarm" />
+                                    <vg-error-display *ngIf="pauseForm.showErrors('heartRateLowAlarm')" class="invalid-feedback" [control]="pauseForm.getFormControl('heartRateLowAlarm')" name="Heart Rate Low Alarm"></vg-error-display>
+                                </div>
+                                <div class="col-6">
+                                    <label for="hr-low-warning">Low Warning</label>
+                                    <input id="hr-low-warning" type="number" min="1" max="999" step="1" class="text-warning form-control" [class.is-invalid]="pauseForm.showErrors('heartRateLowWarning')" formControlName="heartRateLowWarning" />
+                                    <vg-error-display *ngIf="pauseForm.showErrors('heartRateLowWarning')" class="invalid-feedback" [control]="pauseForm.getFormControl('heartRateLowWarning')" name="Heart Rate Low Warning"></vg-error-display>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-5 offset-1">
+                            <div class="row">
+                                <div class="col-6">
+                                    <label for="hr-high-warning">High Warning</label>
+                                    <input id="hr-high-warning" type="number" min="1" max="999" step="1" class="text-warning form-control" [class.is-invalid]="pauseForm.showErrors('heartRateHighWarning')" formControlName="heartRateHighWarning" />
+                                    <vg-error-display *ngIf="pauseForm.showErrors('heartRateHighWarning')" class="invalid-feedback" [control]="pauseForm.getFormControl('heartRateHighWarning')" name="Heart Rate High Warning"></vg-error-display>
+                                </div>
+                                <div class="col-6">
+                                    <label for="hr-high-alarm">High Alarm</label>
+                                    <input id="hr-high-alarm" type="number" min="1" max="999" step="1" class="text-danger form-control" [class.is-invalid]="pauseForm.showErrors('heartRateHighAlarm')" formControlName="heartRateHighAlarm" />
+                                    <vg-error-display *ngIf="pauseForm.showErrors('heartRateHighAlarm')" class="invalid-feedback" [control]="pauseForm.getFormControl('heartRateHighAlarm')" name="Heart Rate High Alarm"></vg-error-display>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row threshold-inputs pt-1">
+                        <div class="col-1 text-center">
+                            <h5 class="mb-0 mt-3">RR</h5>
+                            <fa-icon class="text-secondary" [icon]="circleIcon"></fa-icon>
+                        </div>
+                        <div class="col-5">
+                            <div class="row">
+                                <div class="col-6">
+                                    <label for="rr-low-alarm">Low Alarm</label>
+                                    <input id="rr-low-alarm" type="number" min="1" max="999" step="1" class="text-danger form-control" [class.is-invalid]="pauseForm.showErrors('respirationRateLowAlarm')" formControlName="respirationRateLowAlarm" />
+                                    <vg-error-display *ngIf="pauseForm.showErrors('respirationRateLowAlarm')" class="invalid-feedback" [control]="pauseForm.getFormControl('respirationRateLowAlarm')" name="Respiration Rate Low Alarm"></vg-error-display>
+                                </div>
+                                <div class="col-6">
+                                    <label for="rr-low-warning">Low Warning</label>
+                                    <input id="rr-low-warning" type="number" min="1" max="999" step="1" class="text-warning form-control" [class.is-invalid]="pauseForm.showErrors('respirationRateLowWarning')" formControlName="respirationRateLowWarning" />
+                                    <vg-error-display *ngIf="pauseForm.showErrors('respirationRateLowWarning')" class="invalid-feedback" [control]="pauseForm.getFormControl('respirationRateLowWarning')" name="Respiration Rate Low Warning"></vg-error-display>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-5 offset-1">
+                            <div class="row">
+                                <div class="col-6">
+                                    <label for="rr-high-warning">High Warning</label>
+                                    <input id="rr-high-warning" type="number" min="1" max="999" step="1" class="text-warning form-control" [class.is-invalid]="pauseForm.showErrors('respirationRateHighWarning')" formControlName="respirationRateHighWarning" />
+                                    <vg-error-display *ngIf="pauseForm.showErrors('respirationRateHighWarning')" class="invalid-feedback" [control]="pauseForm.getFormControl('respirationRateHighWarning')" name="Respiration Rate High Warning"></vg-error-display>
+                                </div>
+                                <div class="col-6">
+                                    <label for="rr-high-alarm">High Alarm</label>
+                                    <input id="rr-high-alarm" type="number" min="1" max="999" step="1" class="text-danger form-control" [class.is-invalid]="pauseForm.showErrors('respirationRateHighAlarm')" formControlName="respirationRateHighAlarm" />
+                                    <vg-error-display *ngIf="pauseForm.showErrors('respirationRateHighAlarm')" class="invalid-feedback" [control]="pauseForm.getFormControl('respirationRateHighAlarm')" name="Respiration Rate High Alarm"></vg-error-display>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <button type="submit" class="btn btn-block btn btn-outline-primary text-center m-auto float-right">Resume</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="row">
+    <div class="col-8">
+        <div class="row p-3">
+            <div class="col-3">
+                <div class="row mb-2">
+                    <div class="col-2">HR</div>
+                    <div class="col-10">
+                        <div class="row">
+                            <div class="col-12">
+                                <span class="float-right">(<span class="text-danger mr-1">{{loHeartAlarm}}</span> <span class="text-warning">{{loHeartWarning}}</span> / <span class="text-warning mr-1">{{hiHeartWarning}}</span> <span class="text-danger">{{hiHeartAlarm}}</span>)</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 display-1 text-primary text-center">
+                                {{heartRate || '-'}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-2">RR</div>
+                    <div class="col-10">
+                        <div class="row">
+                            <div class="col-12">
+                                <span class="float-right">(<span class="text-danger mr-1">{{loRespirationAlarm}} </span> <span class="text-warning">{{loRespirationWarning}}</span> / <span class="text-warning mr-1">{{hiRespirationWarning}}</span> <span class="text-danger">{{hiRespirationAlarm}}</span>)</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 display-1 text-secondary text-center">
+                                {{respirationRate || '-'}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-12" style="margin-top:-16px">
+                        <strong class="text-white-50 text-uppercase text-bold d-block">Breed</strong>
+                        <h4 class="font-weight-light">{{breed}}</h4>
+                        <strong class="text-white-50 text-uppercase text-bold d-block">Birth Date</strong>
+                        <h4 class="font-weight-light">{{birthDate | prettyDate}}</h4>
+                        <strong class="text-white-50 text-uppercase text-bold d-block">Weight</strong>
+                        <h4 class="font-weight-light">{{weight}} {{weightUnit}}</h4>
+                
+                        <div class="input-group mt-3 mb-3">
+                            <input #temperatureInput type="number" class="form-control" placeholder="Temperature ({{temperatureUnit}})" [attr.aria-label]="'Temperature (' + temperatureUnit + ')'" aria-describedby="button-addon2" min="0" max="999" step="0.1">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-lighter-gray" type="button" id="button-addon2" (click)="setTemperature()">Update</button>
+                            </div>
+                        </div>
+                        <div class="input-group mt-3 mb-3">
+                            <input #heartrateInput type="number" class="form-control" placeholder="Heartrate" aria-label="Heartrate" aria-describedby="button-addon2" min="0" max="999" step="1">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-lighter-gray" type="button" id="button-addon2" (click)="setHeartrate()">Update</button>
+                            </div>
+                        </div>
+                        <div class="input-group mt-3 mb-3">
+                            <input #respirationrateInput type="number" class="form-control" placeholder="Respiration Rate" aria-label="Respiration Rate" aria-describedby="button-addon2" min="0" max="999" step="1">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-lighter-gray" type="button" id="button-addon2" (click)="setRespirationRate()">Update</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-9">
+                <div class="row mb-4" id="charts">
+                    <div class="col-12">
+                        <tabset>
+                            <!-- Motion -->
+                            <tab heading="Overview" id="motion">
+                                <div class="row mt-2 mb-4">
+                                    <div class="col-12">
+                                        <app-line-chart
+                                            [id] = "'HR'"
+                                            [height] = "'115px'"
+                                            [datasets] = "hrDataSet"
+                                            [displayLegend]= "false"
+                                            [enableToolTip]="true"
+
+                                            [xDisplay]= "false"
+                                            [xType]= "'time'"
+                                            [xScaleLabelDisplay]= "false"
+                                            [xScaleLabelLabel]= "'Date'"
+                                            [xTickColor] = "'#FF0000'"
+                                            [xTickStyle] = "'bold'"
+
+                                            [yDisplay]= "true"
+                                            [yGridLines]= "{color: 'rgba(255, 255, 255, 0.1)'}"
+                                            [yAfterFit] = "true"
+                                            [yScaleWidth] = "35"
+
+                                            [initializing] = "initializing"
+                                            [motion] = "motionDetected"
+                                            [pause] = "paused"
+                                        ></app-line-chart>
+                                    </div>
+                                </div>
+                                <div class="row mt-2 mb-4">
+                                    <div class="col-12">
+                                        <app-line-chart
+                                            [id] = "'RR'"
+                                            [height] = "'115px'"
+                                            [datasets] = "rrDataSet"
+                                            [displayLegend]= "false"
+                                            [enableToolTip]="true"
+
+                                            [xDisplay]= "false"
+                                            [xType]= "'time'"
+                                            [xScaleLabelDisplay]= "false"
+                                            [xScaleLabelLabel]= "'Date'"
+                                            [xTickColor] = "'#FF0000'"
+                                            [xTickStyle] = "'bold'"
+
+                                            [yDisplay]= "true"
+                                            [yGridLines]= "{color: 'rgba(255, 255, 255, 0.1)'}"
+                                            [yAfterFit] = "true"
+                                            [yScaleWidth] = "35"
+
+                                            [initializing] = "initializing"
+                                            [motion] = "motionDetected"
+                                            [pause] = "paused"
+                                        ></app-line-chart>
+                                    </div>
+                                </div>
+                            </tab>
+                            
+                            <!-- HH FTT-->
+                            <tab heading="HR" id="hhFFT">
+                                <div class="row mt-2">
+                                    <div class="col-12">
+                                        <app-scatter-chart
+                                            [id] = "'HR FFT'"
+                                            [height] = "'250px'"
+                                            [datasets] = "fftHRDataSet"
+                                            [displayLegend]= "false"
+                                            [enableToolTip]="true"
+                                            [showLine]="true"
+
+                                            [xDisplay]= "true"
+                                            [xTickColor] = "'#FF0000'"
+                                            [xTickStyle] = "'bold'"
+                                            [xPrecision]= "16"
+
+                                            [yDisplay]= "true"
+                                            [yGridLines]= "{color: 'rgba(255, 255, 255, 0.1)'}"
+                                            [yPrecision]= "3"
+
+                                            [initializing] = "initializing"
+                                            [motion] = "motionDetected"
+                                            [pause] = "paused"
+                                        ></app-scatter-chart>
+                                    </div>
+                                </div>
+                            </tab>
+    
+                            <!-- RR FTT-->
+                            <tab heading="RR" id="rrFFT">
+                                <div class="row mt-2">
+                                    <div class="col-12">
+                                        <app-scatter-chart
+                                            [id] = "'RR FFT'"
+                                            [height] = "'250px'"
+                                            [datasets] = "fftRRDataSet"
+                                            [displayLegend]= "false"
+                                            [enableToolTip]="true"
+
+                                            [xDisplay]= "true"
+                                            [xTickColor] = "'#FF0000'"
+                                            [xTickStyle] = "'bold'"
+                                            [xPrecision]= "16"
+
+                                            [yDisplay]= "true"
+                                            [yGridLines]= "{color: 'rgba(255, 255, 255, 0.1)'}"
+                                            [yPrecision]= "3"
+
+                                            [initializing] = "initializing"
+                                            [motion] = "motionDetected"
+                                            [pause] = "paused"
+                                        ></app-scatter-chart>
+                                    </div>
+                                </div>
+                            </tab>
+                        </tabset>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-12">
+                        <vg-run-log #runLog [runId]="runId" [maxHeight]="logsMaxHeight"></vg-run-log>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-4">
+        <div class="row">
+            <div class="col-12">
+                <vg-video-stream [unitId]="unitId" [videoEnabled]="videoEnabled" ></vg-video-stream>
+            </div>
+        </div>
+        <div class="row p-4">
+            <div class="col-12">
+                <button *ngIf="isOccupied && !paused" class="btn btn-outline-info btn-block btn-lg mt-2" (click)="pauseRun()" [attr.disabled]="isAcquiring ? null : true">Pause</button>
+                <button *ngIf="isOccupied && paused" class="btn btn-outline-success btn-block btn-lg mt-2" (click)="startRun()" [attr.disabled]="isAcquiring ? null : true">Start</button>
+                <button *ngIf="isOccupied" class="btn btn-outline-danger btn-block btn-lg mt-2" (click)="stopRun()" [attr.disabled]="isAcquiring ? null : true">Stop</button>
+            </div>
+        </div>
+    </div>
+</div>

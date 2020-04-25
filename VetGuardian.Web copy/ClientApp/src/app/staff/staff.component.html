@@ -1,0 +1,156 @@
+<div class="p-3">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                  <h4 class="d-inline">Staff</h4>
+
+                  <div class="float-right">
+                      <button class="btn btn-outline-secondary" type="button" (click)="newStaffModal.show()"><fa-icon [icon]="addIcon"></fa-icon> New</button>
+                  </div>
+
+                </div>
+                <div class="card-body">
+                  <div class="card-text">
+
+                      <ul class="list-group">
+                          <li class="list-group-item pt-1 pb-1" *ngFor="let user of staff" style="background-color: #404B51 !important;">
+                              <i class="fas fa-edit fa-fw"></i> {{user.firstName}} {{user.lastName}} ({{getStaffTypeText(user.staffType)}})
+                              
+                              <div class="input-group-append float-right">
+                                <button class="btn btn-outline-primary" type="button" (click)="onSelectStaff(user);editStaffModal.show();"><fa-icon [icon]="editIcon"></fa-icon> Edit</button>
+                                <button class="btn btn-outline-secondary" type="button" (click)="onSelectStaff(user);deleteStaffModal.show();"><fa-icon [icon]="deleteIcon"></fa-icon> Delete</button>
+                              </div>
+                          </li>
+                          <li class="list-group-item list-group-item-primary m-0 pt-1 pb-0" *ngIf="staff.length == 0">There are no staff.</li>
+                      </ul>
+
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" bsModal #newStaffModal="bs-modal" [config]="{animated: false}" (onHide)="newStaffForm.reset()">
+  <form (ngSubmit)="onNewStaffSubmit()" [formGroup]="newStaffForm">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h4 id="dialog-static-name" class="modal-title pull-left">New Staff</h4>
+          <button type="button" class="close pull-right" aria-label="Close" (click)="newStaffModal.hide()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <div class="modal-body">
+
+            <div class="form-group">
+              <select class="form-control" [class.is-invalid]="newStaffForm.showErrors('staffType')" formControlName="staffType">
+                  <option value="null" disabled>Staff Type</option>
+                  <option *ngFor="let type of staffTypes" [value]="type.id">{{type.name}}</option>
+              </select>
+              <vg-error-display *ngIf="newStaffForm.showErrors('staffType')" class="invalid-feedback" [control]="newStaffForm.getFormControl('staffType')" name="Staff Type"></vg-error-display>
+            </div>  
+
+            <div class="row">
+                <div class="col">
+                  <div class="form-group">
+                    <label class="form-label" style="height:auto; display:block">First Name</label>
+                    <input type="text" placeholder="First Name" class="form-control" [class.is-invalid]="newStaffForm.showErrors('name')" formControlName="firstName" />
+                    <vg-error-display *ngIf="newStaffForm.showErrors('firstName')" class="invalid-feedback " [control]="newStaffForm.getFormControl('firstName')" name="First Name"></vg-error-display>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" style="height:auto; display:block">Last Name</label>
+                    <input type="text" placeholder="Last Name" class="form-control" [class.is-invalid]="newStaffForm.showErrors('lastName')" formControlName="lastName" />
+                    <vg-error-display *ngIf="newStaffForm.showErrors('lastName')" class="invalid-feedback " [control]="newStaffForm.getFormControl('lastName')" name="Last Name"></vg-error-display>
+                  </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" (click)="newStaffModal.hide()">Cancel</button>
+          <button type="submit" [disabled]="!newStaffForm.valid" class="btn btn-outline-primary">Submit</button>
+        </div>
+        
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="modal fade" bsModal #editStaffModal="bs-modal" [config]="{animated: false}" (onHide)="editStaffForm.reset()">
+  <form (ngSubmit)="onEditStaffSubmit()" [formGroup]="editStaffForm">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h4 id="dialog-static-name" class="modal-title pull-left">New Staff</h4>
+          <button type="button" class="close pull-right" aria-label="Close" (click)="editStaffModal.hide()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <div class="modal-body">
+
+            <div class="form-group">
+              <select class="form-control" [class.is-invalid]="editStaffForm.showErrors('staffType')" formControlName="staffType">
+                  <option value="null" disabled>Staff Type</option>
+                  <option *ngFor="let type of staffTypes" [value]="type.id">{{type.name}}</option>
+              </select>
+              <vg-error-display *ngIf="editStaffForm.showErrors('staffType')" class="invalid-feedback" [control]="editStaffForm.getFormControl('staffType')" name="Staff Type"></vg-error-display>
+            </div>  
+
+            <div class="row">
+                <div class="col">
+                  <div class="form-group">
+                    <label class="form-label" style="height:auto; display:block">First Name</label>
+                    <input type="text" placeholder="First Name" class="form-control" [class.is-invalid]="editStaffForm.showErrors('firstName')" formControlName="firstName" />
+                    <vg-error-display *ngIf="editStaffForm.showErrors('firstName')" class="invalid-feedback " [control]="editStaffForm.getFormControl('firstName')" name="First Name"></vg-error-display>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" style="height:auto; display:block">Last Name</label>
+                    <input type="text" placeholder="Last Name" class="form-control" [class.is-invalid]="editStaffForm.showErrors('lastName')" formControlName="lastName" />
+                    <vg-error-display *ngIf="editStaffForm.showErrors('lastName')" class="invalid-feedback " [control]="editStaffForm.getFormControl('lastName')" name="Last Name"></vg-error-display>
+                  </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" (click)="editStaffModal.hide()">Cancel</button>
+          <button type="submit" [disabled]="!editStaffForm.valid" class="btn btn-outline-primary">Submit</button>
+        </div>
+        
+      </div>
+    </div>
+  </form>
+</div>
+
+
+<div class="modal fade" bsModal #deleteStaffModal="bs-modal" [config]="{animated: false}">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h4 id="dialog-static-name" class="modal-title pull-left">Delete Staff</h4>
+          <button type="button" class="close pull-right" aria-label="Close" (click)="deleteStaffModal.hide()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <div class="modal-body">
+          <p>Are you sure you want to delete the staff member? This action cannot be undone.</p>
+          <p *ngIf="deleteError !== ''">{{deleteError}}</p>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" (click)="deleteStaffModal.hide()">Cancel</button>
+          <button type="submit" [disabled]="!selectedStaff" class="btn btn-outline-danger" (click)="onDeleteStaff()">Delete</button>
+        </div>
+      </div>
+    </div>
+</div>

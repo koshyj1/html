@@ -1,0 +1,126 @@
+<div class="p-3">
+    <div class="row">
+        <div class="col-8">
+            <div class="card">
+                <div class="card-header">
+                    Vet Settings
+                </div>
+                <div class="card-body">
+                    <div class="card-text">
+                        <form (ngSubmit)="onSubmit()" [formGroup]="form">
+                            <div class="form-group">
+                                <label for="name">Name</label>
+                                <input type="text" class="form-control" id="name" [class.is-invalid]="form.showErrors('name')" formControlName="name" [attr.disabled]="disableInput ? true : null" />
+                                <vg-error-display *ngIf="form.showErrors('name')" class="invalid-feedback" [control]="form.getFormControl('name')" name="Name"></vg-error-display>
+                            </div>
+                            <div class="form-group">
+                                <label for="address">Address</label>
+                                <input type="text" class="form-control" id="address" [class.is-invalid]="form.showErrors('address')" formControlName="address" [attr.disabled]="disableInput ? true : null" />
+                                <vg-error-display *ngIf="form.showErrors('address')" class="invalid-feedback" [control]="form.getFormControl('address')" name="Address"></vg-error-display>
+                            </div>
+                            <div class="row">
+                                <div class="col-8">
+                                    <div class="form-group">
+                                        <label for="city">City</label>
+                                        <input type="text" class="form-control" id="city" [class.is-invalid]="form.showErrors('city')" formControlName="city" [attr.disabled]="disableInput ? true : null" />
+                                        <vg-error-display *ngIf="form.showErrors('city')" class="invalid-feedback" [control]="form.getFormControl('city')" name="City"></vg-error-display>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="form-group">
+                                        <label for="state">State</label>
+                                        <input type="text" class="form-control" id="state" [class.is-invalid]="form.showErrors('state')" formControlName="state" [attr.disabled]="disableInput ? true : null" />
+                                        <vg-error-display *ngIf="form.showErrors('state')" class="invalid-feedback" [control]="form.getFormControl('state')" name="State"></vg-error-display>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="form-group">
+                                        <label for="zipCode">Zip Code</label>
+                                        <input type="text" class="form-control" id="zipCode" [class.is-invalid]="form.showErrors('zipCode')" formControlName="zipCode" [attr.disabled]="disableInput ? true : null" />
+                                        <vg-error-display *ngIf="form.showErrors('zipCode')" class="invalid-feedback" [control]="form.getFormControl('zipCode')" name="Zip Code"></vg-error-display>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label for="phoneNumber">Phone Number</label>
+                                        <input type="text" class="form-control" id="phoneNumber" [class.is-invalid]="form.showErrors('phoneNumber')" formControlName="phoneNumber" [attr.disabled]="disableInput ? true : null" />
+                                        <vg-error-display *ngIf="form.showErrors('phoneNumber')" class="invalid-feedback" [control]="form.getFormControl('phoneNumber')" name="Zip Code"></vg-error-display>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label for="email">Email</label>
+                                        <input type="text" class="form-control" id="email" [class.is-invalid]="form.showErrors('email')" formControlName="email" [attr.disabled]="disableInput ? true : null" />
+                                        <vg-error-display *ngIf="form.showErrors('email')" class="invalid-feedback" [control]="form.getFormControl('email')" name="Zip Code"></vg-error-display>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                    <div class="col-4">
+                                        <div class="form-group">
+                                            <label for="defaultAttendingDoctorId">Default Attending Doctor</label>
+                                            <select class="form-control" id="defaultAttendingDoctorId" formControlName="defaultAttendingDoctorId"  [class.is-invalid]="form.showErrors('defaultAttendingDoctorId')" [attr.disabled]="disableInput ? true : null" >
+                                                <option [value]="null">Select</option>
+                                                <option *ngFor="let staff of attendingDoctors" [value]="staff.id">{{staff.firstName}} {{staff.lastName}}</option>
+                                            </select>
+                                            <vg-error-display *ngIf="form.showErrors('defaultAttendingDoctorId')" class="invalid-feedback" [control]="form.getFormControl('defaultAttendingDoctorId')" name="Default Attending Doctor"></vg-error-display>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="form-group">
+                                            <label for="defaultVetTechId">Default Vet Tech</label>
+                                            <select class="form-control" id="defaultVetTechId" formControlName="defaultVetTechId"  [class.is-invalid]="form.showErrors('defaultVetTechId')" [attr.disabled]="disableInput ? true : null" >
+                                                <option [value]="null">Select</option>
+                                                <option *ngFor="let staff of vetTechs" [value]="staff.id">{{staff.firstName}} {{staff.lastName}}</option>
+                                            </select>
+                                            <vg-error-display *ngIf="form.showErrors('defaultVetTechId')" class="invalid-feedback" [control]="form.getFormControl('defaultVetTechId')" name="Default Vet Tech"></vg-error-display>
+                                        </div>
+                                    </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-1">
+                                    <div class="form-group">
+                                        <div class="btn-group" id="defaultWeightUnit" btnRadioGroup formControlName="defaultWeightUnit">
+                                            <label btnRadio="{{unit.id}}" class="btn btn-outline-primary" tabindex="0" role="button" *ngFor="let unit of weightUnits">{{unit.initials}}</label>
+                                        </div>
+                                        <vg-error-display *ngIf="form.showErrors('defaultWeightUnit')" class="invalid-feedback" [control]="form.getFormControl('defaultWeightUnit')" name="Weight Unit"></vg-error-display>
+                                    </div>
+                                </div>
+                                <div class="col-1">
+                                    <div class="form-group">
+                                        <div class="btn-group" id="defaultTemperatureUnit" btnRadioGroup formControlName="defaultTemperatureUnit">
+                                          <label btnRadio="{{unit.id}}" class="btn btn-outline-primary" tabindex="0" role="button" *ngFor="let unit of temperatureUnits">{{unit.initials}}</label>
+                                        </div>
+                                        <vg-error-display *ngIf="form.showErrors('defaultTemperatureUnit')" class="invalid-feedback" [control]="form.getFormControl('defaultTemperatureUnit')" name="Temperature Unit"></vg-error-display>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-sm btn-outline-primary">Save Settings</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="card">
+                <div class="card-header">
+                    Logo
+                </div>
+                <div class="card-body">
+                    <div class="card-text">
+                        <img src="/api/settings/vet-settings/logo?{{imageTs}}" style="max-height: 150px; max-width: 100%;" /><br />
+                        <div class="form-group">
+                            <label for="logo-image">Upload Image</label>
+                            <input type="file" class="form-control-file" name="logo-image" id="logo-image" (change)="onFileChanged($event)" />
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-outline-primary" [disabled]="!selectedFile || uploading" (click)="onUpload()">Upload Logo</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

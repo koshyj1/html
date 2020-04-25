@@ -1,0 +1,20 @@
+.status-bar {
+    background: #1A1F23;
+
+    & input {
+        background-color: #1A1F23;
+        color: #FEFDFD;
+        border: 2px solid #808080;
+        padding: 5px;
+    }
+
+    & h3 {
+        margin-bottom: 0px;
+    }
+
+    & .validation-error {
+        position: absolute;
+        top: 50%;
+        transform: translateY(100%);
+    }
+}

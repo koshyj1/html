@@ -1,0 +1,106 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="#">VetGuardian
+      <small class="font-weight-light" id="version" style="font-size: 12px;" *ngIf="version"> v{{version | async}}</small>
+  </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarPrimary" aria-controls="navbarPrimary"
+      aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarPrimary">
+    <div class="navbar-nav ml-auto h4">
+      {{name}}
+    </div>
+    <ul class="navbar-nav ml-auto">      
+      <li class="nav-item"><a class="nav-link px-4" routerLink="/history">History</a></li>
+
+      <li class="nav-item dropdown" dropdown>
+        <a href id="basic-link" dropdownToggle (click)="false" class="dropdown-toggle nav-link px-4" aria-controls="basic-link-dropdown">Settings</a>
+        <ul id="basic-link-dropdown" *dropdownMenu class="dropdown-menu show" role="menu" aria-labelledby="basic-link">
+          <button type="button" class="dropdown-item btn btn-link" (click)="openAdminLogin(loginForm)">Admin Settings</button>
+          <a class="dropdown-item" routerLink="/settings">Settings</a>
+          <a class="dropdown-item" routerLink="/staff">Staff</a>
+        </ul>
+      </li>
+
+      <li class="nav-item dropdown" dropdown>
+        <a href id="basic-link" dropdownToggle (click)="false" class="dropdown-toggle nav-link px-4" aria-controls="basic-link-dropdown">Devices</a>
+        <ul id="basic-link-dropdown" *dropdownMenu class="dropdown-menu show" role="menu" aria-labelledby="basic-link">
+          <a class="dropdown-item" routerLink="/devices">Device List</a>
+          <a class="dropdown-item" [class.disabled]="!unitId" [routerLink]="unitId ? ['/configure', unitId] : []">Configure Unit</a>
+        </ul>
+      </li>
+
+      <li class="nav-item dropdown" dropdown>
+        <a href id="basic-link" dropdownToggle (click)="false" class="dropdown-toggle nav-link px-4" aria-controls="basic-link-dropdown">Help</a>
+        <ul id="basic-link-dropdown" *dropdownMenu class="dropdown-menu show" role="menu" aria-labelledby="basic-link">
+          <a class="dropdown-item" href="https://vetguardian.pet/support.html" target="_blank">Support</a>
+          <a class="dropdown-item" href="https://vetguardian.pet/contact-us.html" target="_blank">Feedback</a>
+          <button type="button" class="dropdown-item btn btn-link" (click)="openChangeLog(changeLog)">Change Log</button>
+        </ul>
+      </li>
+
+      <li class="nav-item"><a class="nav-link px-4" href="#">Logout</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container-fluid">
+  <vg-unit-summaries (unitDisplayed)="onUnitDisplayed($event)"></vg-unit-summaries>
+  <div #routerWrapper class="router-wrapper">
+      <router-outlet></router-outlet>
+  </div>
+
+</div>
+
+<ng-template #loginForm>
+    <form (ngSubmit)="onSubmit()" [formGroup]="form">
+        <div class="modal-header">
+            <h5 class="modal-title">Admin Login</h5>
+            <button type="button" class="close" aria-label="Close" (click)="adminLoginModal.hide()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+          <div class="card">
+              <div class="card-body">
+                  <div class="card-text">
+                      <vg-error-display *ngIf="form.showErrors()" class="invalid-feedback d-block mb-2" [control]="form"></vg-error-display >
+
+                      <div class="form-group">
+                          <label for="password">Password</label>
+                          <input autoFocus type="password" class="form-control" id="password" [class.is-invalid]="form.showErrors('password')" formControlName="password" />
+                          <vg-error-display *ngIf="form.showErrors('password')" class="invalid-feedback" [control]="form.getFormControl('password')" name="Password"></vg-error-display>
+                      </div>
+                  </div>
+              </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary float-right">Login</button>
+          <button type="button" class="btn btn-secondary" (click)="adminLoginModal.hide()">Close</button>
+        </div>
+    </form>
+</ng-template>
+
+<ng-template #changeLog>
+  
+    <div class="modal-header">
+        <h5 class="modal-title">Change Log</h5>
+        <button type="button" class="close" aria-label="Close" (click)="changeLogModal.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+      <div class="card">
+          <div class="card-body" style="overflow: auto; max-height: 300px;">
+              <div class="card-text">
+                <samp>
+                  <pre style="color:white;">{{changeLogContent}}</pre>
+                </samp>
+              </div>
+          </div>
+      </div>
+    </div>
+
+</ng-template>

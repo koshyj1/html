@@ -1,0 +1,291 @@
+<div class="p-3">
+    <div class="row">
+        <div class="col-12">
+            <form (ngSubmit)="onSubmit()" [formGroup]="form">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                Charting Settings
+                            </div>
+                            <div class="card-body">
+                                <div class="card-text">
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="enableAlarm"
+                                            [class.is-invalid]="form.showErrors('enableAlarm')"
+                                            formControlName="enableAlarm" />
+                                        <label class="form-check-label" for="enableAlarm">Enable Alarms</label>
+                                        <vg-error-display *ngIf="form.showErrors('enableAlarm')"
+                                            class="invalid-feedback" [control]="form.getFormControl('enableAlarm')"
+                                            name="Enable Alarm">
+                                        </vg-error-display>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+
+                        <div class="card">
+                            <div class="card-header">
+                                FTP Settings
+                            </div>
+                            <div class="card-body">
+                                <div class="card-text">
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="enabled"
+                                            [class.is-invalid]="form.showErrors('enabled')" formControlName="enabled" />
+                                        <label class="form-check-label" for="enabled">Enabled</label>
+                                        <vg-error-display *ngIf="form.showErrors('enabled')" class="invalid-feedback"
+                                            [control]="form.getFormControl('enabled')" name="Enabled">
+                                        </vg-error-display>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col form-group">
+                                            <label for="hostname">Hostname</label>
+                                            <input type="text" class="form-control" id="hostname"
+                                                [class.is-invalid]="form.showErrors('hostname')"
+                                                formControlName="hostname" />
+                                            <vg-error-display *ngIf="form.showErrors('hostname')"
+                                                class="invalid-feedback" [control]="form.getFormControl('hostname')"
+                                                name="Hostname"></vg-error-display>
+                                        </div>
+                                        <div class="col form-group">
+                                            <label for="userName">User Name</label>
+                                            <input type="text" class="form-control" id="userName"
+                                                [class.is-invalid]="form.showErrors('userName')"
+                                                formControlName="userName" />
+                                            <vg-error-display *ngIf="form.showErrors('userName')"
+                                                class="invalid-feedback" [control]="form.getFormControl('userName')"
+                                                name="User Name"></vg-error-display>
+                                        </div>
+                                        <div class="col form-group">
+                                            <label for="password">Password</label>
+                                            <input type="password" class="form-control" id="password"
+                                                [class.is-invalid]="form.showErrors('password')"
+                                                formControlName="password" />
+                                            <vg-error-display *ngIf="form.showErrors('password')"
+                                                class="invalid-feedback" [control]="form.getFormControl('password')"
+                                                name="Password"></vg-error-display>
+                                        </div>
+                                        <div class="col form-group">
+                                            <label for="rootPath">Root Path</label>
+                                            <input type="text" class="form-control" id="rootPath"
+                                                [class.is-invalid]="form.showErrors('rootPath')"
+                                                formControlName="rootPath" />
+                                            <vg-error-display *ngIf="form.showErrors('rootPath')"
+                                                class="invalid-feedback" [control]="form.getFormControl('rootPath')"
+                                                name="Rooth Path">
+                                            </vg-error-display>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="card">
+                            <div class="card-header">
+                                FFT Settings
+                            </div>
+                            <div class="card-body">
+                                <div class="card-text">
+                                    <div class="form-row">
+                                        <div class="col-4 form-group">
+                                            <label for="motionThreshold">Motion Threshold</label>
+                                            <input type="text" class="form-control" id="motionThreshold"
+                                                [class.is-invalid]="form.showErrors('motionThreshold')"
+                                                formControlName="motionThreshold" />
+                                            <vg-error-display *ngIf="form.showErrors('motionThreshold')"
+                                                class="invalid-feedback"
+                                                [control]="form.getFormControl('motionThreshold')"
+                                                name="motionThreshold"></vg-error-display>
+                                        </div>
+                                        <div class="col-4 form-group">
+                                            <label for="motionDelay">Motion Delay</label>
+                                            <input type="text" class="form-control" id="motionDelay"
+                                                [class.is-invalid]="form.showErrors('motionDelay')"
+                                                formControlName="motionDelay" />
+                                            <vg-error-display *ngIf="form.showErrors('motionDelay')"
+                                                class="invalid-feedback" [control]="form.getFormControl('motionDelay')"
+                                                name="motionDelay">
+                                            </vg-error-display>
+                                        </div>
+                                        <div class="col-4 form-group">
+                                            <label for="hrMagnitude">HR Magnitude</label>
+                                            <input type="text" class="form-control" id="hrMagnitude"
+                                                [class.is-invalid]="form.showErrors('hrMagnitude')"
+                                                formControlName="hrMagnitude" />
+                                            <vg-error-display *ngIf="form.showErrors('hrMagnitude')"
+                                                class="invalid-feedback" [control]="form.getFormControl('hrMagnitude')"
+                                                name="hrMagnitude">
+                                            </vg-error-display>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col-4 form-group">
+                                            <label for="sampleSize">Sample Size</label>
+                                            <input type="text" class="form-control" id="sampleSize"
+                                                [class.is-invalid]="form.showErrors('sampleSize')"
+                                                formControlName="sampleSize" />
+                                            <vg-error-display *ngIf="form.showErrors('sampleSize')"
+                                                class="invalid-feedback" [control]="form.getFormControl('sampleSize')"
+                                                name="sampleSize">
+                                            </vg-error-display>
+                                        </div>
+                                        <div class="col-4 form-group">
+                                            <label for="sampleRate">Sample Rate</label>
+                                            <input type="text" class="form-control" id="sampleRate"
+                                                [class.is-invalid]="form.showErrors('sampleRate')"
+                                                formControlName="sampleRate" />
+                                            <vg-error-display *ngIf="form.showErrors('sampleRate')"
+                                                class="invalid-feedback" [control]="form.getFormControl('sampleRate')"
+                                                name="sampleRate">
+                                            </vg-error-display>
+                                        </div>
+                                        <div class="col-4 form-group">
+                                            <label for="sampleSizeRR">Sample Size RR</label>
+                                            <input type="text" class="form-control" id="sampleSizeRR"
+                                                [class.is-invalid]="form.showErrors('sampleSizeRR')"
+                                                formControlName="sampleSizeRR" />
+                                            <vg-error-display *ngIf="form.showErrors('sampleSizeRR')"
+                                                class="invalid-feedback" [control]="form.getFormControl('sampleSizeRR')"
+                                                name="sampleSizeRR">
+                                            </vg-error-display>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col-6 form-group">
+                                            <label for="presenceSampleSize">Presence Sample Size</label>
+                                            <input type="text" class="form-control" id="presenceSampleSize"
+                                                [class.is-invalid]="form.showErrors('presenceSampleSize')"
+                                                formControlName="presenceSampleSize" />
+                                            <vg-error-display *ngIf="form.showErrors('presenceSampleSize')"
+                                                class="invalid-feedback"
+                                                [control]="form.getFormControl('presenceSampleSize')"
+                                                name="presenceSampleSize"></vg-error-display>
+                                        </div>
+                                        <div class="col-6 form-group">
+                                            <label for="presenceSampleRate">Presence Sample Rate</label>
+                                            <input type="text" class="form-control" id="presenceSampleRate"
+                                                [class.is-invalid]="form.showErrors('presenceSampleRate')"
+                                                formControlName="presenceSampleRate" />
+                                            <vg-error-display *ngIf="form.showErrors('presenceSampleRate')"
+                                                class="invalid-feedback"
+                                                [control]="form.getFormControl('presenceSampleRate')"
+                                                name="presenceSampleRate"></vg-error-display>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col-6 form-group">
+                                            <label for="displayAverageSeconds">Display Average Seconds</label>
+                                            <input type="text" class="form-control" id="displayAverageSeconds"
+                                                [class.is-invalid]="form.showErrors('displayAverageSeconds')"
+                                                formControlName="displayAverageSeconds" />
+                                            <vg-error-display *ngIf="form.showErrors('displayAverageSeconds')"
+                                                class="invalid-feedback"
+                                                [control]="form.getFormControl('displayAverageSeconds')"
+                                                name="Display Average Seconds"></vg-error-display>
+                                        </div>
+                                        <div class="col-6 form-group">
+                                            <label for="displayAverageSecondsRR">Display Average Seconds RR</label>
+                                            <input type="text" class="form-control" id="displayAverageSecondsRR"
+                                                [class.is-invalid]="form.showErrors('displayAverageSecondsRR')"
+                                                formControlName="displayAverageSecondsRR" />
+                                            <vg-error-display *ngIf="form.showErrors('displayAverageSecondsRR')"
+                                                class="invalid-feedback"
+                                                [control]="form.getFormControl('displayAverageSecondsRR')"
+                                                name="Display Average Seconds RR"></vg-error-display>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="card">
+                                <div class="card-header">
+                                    Body Detection
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-text">
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="enableBodyDetect" (click)="onToggleBodyDetection()"
+                                                [class.is-invalid]="form.showErrors('enableBodyDetect')"
+                                                formControlName="enableBodyDetect" />
+                                            <label class="form-check-label" for="enableBodyDetect">Enable Body Detection</label>
+                                            <vg-error-display *ngIf="form.showErrors('enableBodyDetect')"
+                                                class="invalid-feedback" [control]="form.getFormControl('enableBodyDetect')"
+                                                name="Enabled"></vg-error-display>
+                                        </div>
+
+                                        <div class="form-row">
+                                            <div class="col-12 form-group">
+                                                <label for="detectionType" class="d-block">Detection Type</label>
+                                                <div class="btn-group" name="detectionType">
+                                                    <button type="button" class="btn btn-outline-primary" [class.disabled]="detectionTypeDisabled" [disabled]="detectionTypeDisabled" [ngClass]="{'active': detectionType == detection }" (click)="onSetDetectionType(detection)" tabindex="0" role="button" *ngFor="let detection of detectionTypes">{{detection.name}}</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="col-3 form-group">
+                                                <label for="presenceDetectCount">Presence Detect Count</label>
+                                                <input type="text" class="form-control" id="presenceDetectCount"
+                                                    [class.is-invalid]="form.showErrors('presenceDetectCount')"
+                                                    formControlName="presenceDetectCount" />
+                                                <vg-error-display *ngIf="form.showErrors('presenceDetectCount')"
+                                                    class="invalid-feedback"
+                                                    [control]="form.getFormControl('presenceDetectCount')"
+                                                    name="presenceDetectCount"></vg-error-display>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                Cloud Settings
+                            </div>
+                            <div class="card-body">
+                                <div class="card-text">
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="cloudEnabled"
+                                            [class.is-invalid]="form.showErrors('cloudEnabled')"
+                                            formControlName="cloudEnabled" />
+                                        <label class="form-check-label" for="cloudEnabled">Enabled</label>
+                                        <vg-error-display *ngIf="form.showErrors('cloudEnabled')"
+                                            class="invalid-feedback" [control]="form.getFormControl('cloudEnabled')"
+                                            name="Enabled"></vg-error-display>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col-3 form-group">
+                                            <label for="runDataCloudEndpoint">Run Data Cloud Endpoint</label>
+                                            <input type="text" class="form-control" id="runDataCloudEndpoint"
+                                                [class.is-invalid]="form.showErrors('runDataCloudEndpoint')"
+                                                formControlName="runDataCloudEndpoint" />
+                                            <vg-error-display *ngIf="form.showErrors('runDataCloudEndpoint')"
+                                                class="invalid-feedback"
+                                                [control]="form.getFormControl('runDataCloudEndpoint')"
+                                                name="Run Data Cloud Endpoint"></vg-error-display>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-sm btn-outline-primary">Save Settings</button>
+            </form>
+        </div>
+    </div>
+</div>

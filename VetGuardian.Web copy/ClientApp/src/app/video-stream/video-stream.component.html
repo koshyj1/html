@@ -1,0 +1,9 @@
+<div class="image-container">
+    <img *ngIf="videoEnabled && imageData" class="image-display" [src]="'data:image/jpg;base64,'+imageData" />
+    <div *ngIf="!videoEnabled || !imageData" class="image-display" style="text-align:center">
+            <fa-icon class="no-video-icon" [icon]="noVideoIcon" size="2x"></fa-icon>
+    </div>
+</div>
+
+<button type="button" *ngIf="videoEnabled === true" class="btn btn-lg btn-outline-lightest-gray mt-2" (click)="disableVideo()" [attr.disabled]="disableVideoBtn || null">Disable Video</button>
+<button type="button" *ngIf="videoEnabled === false" class="btn btn-lg btn-outline-lightest-gray mt-2" (click)="enableVideo()" [attr.disabled]="disableVideoBtn || null">Enable Video</button>

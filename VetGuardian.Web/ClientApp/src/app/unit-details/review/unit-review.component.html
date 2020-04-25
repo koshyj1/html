@@ -1,0 +1,44 @@
+<vg-unit-status-bar [runTime]="runTime" [unitName]="unitName" [unitStatus]="unitStatus" [patient]="patient"></vg-unit-status-bar>
+
+<div class="bg-gray">
+    <div class="row">
+        <div class="col-8">
+            <div class="row p-3">
+                <div class="col-3">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-2">HR</div>
+                                <div class="col-10 display-1 text-primary text-center">-</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-2">RR</div>
+                                <div class="col-10 display-1 text-secondary text-center">-</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <strong class="text-white-50 text-uppercase text-bold d-block">Breed</strong>
+                            <h4 class="font-weight-light">{{breed}}</h4>
+                            <strong class="text-white-50 text-uppercase text-bold d-block">Birth Date</strong>
+                            <h4 class="font-weight-light">{{birthDate | prettyDate}}</h4>
+                            <strong class="text-white-50 text-uppercase text-bold d-block">Weight</strong>
+                            <h4 class="font-weight-light">{{weight}} {{weightUnit}}</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-9">
+                    <vg-run-log #runLog [runId]="runId" [maxHeight]="logsMaxHeight"></vg-run-log>
+                </div>
+            </div>
+        </div>
+        <div class="col-4">
+            <button class="btn btn-outline-lightest-gray btn-block btn-lg mt-2" (click)="clearUnit()">READY FOR NEXT PATIENT</button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,48 @@
+<div class="p-2">
+  Search Filter
+</div>
+
+<input placeholder="Patient ID, Name or Owner Name" class="form-control" [value]="searchName" [formControl]="searchNameControl" />
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Patient ID</th>
+            <th>Patient Name</th>
+            <th>Species & Breed</th>
+            <th>Owner</th>
+            <th>Timestamp</th>
+            <th>Data</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let rnp of history">
+            <td>{{rnp.patient.patientId || 'N/A'}}</td>
+            <td>{{rnp.patient.name}}</td>
+            <td>
+                <fa-icon [class.text-male]="rnp.patient.sex === 1 || rnp.patient.sex === 3" [class.text-female]="rnp.patient.sex === 2 || rnp.patient.sex === 4" [icon]="iconService.getSpeciesIcon(rnp.patient.species)"></fa-icon>
+                {{enumService.getSpeciesName(rnp.patient.species)}}
+                ({{rnp.patient.breed}})
+            </td>
+            <td>{{rnp.patient.ownerName}}</td>
+            <td>{{rnp.run.timestamp | date:'short'}}</td>
+            <td>
+                <div class="dropdown mr-2" dropdown>
+                    <button dropdownToggle class="dropdown-toggle btn btn-sm btn-outline-primary">Get Summary</button>
+                    <ul *dropdownMenu class="dropdown-menu" role="menu">
+                        <button class="dropdown-item" (click)="downloadFile('/api/runs/'+rnp.run.id+'/export/vet/summary')">Vet Summary</button>
+                        <button class="dropdown-item" (click)="downloadFile('/api/runs/'+rnp.run.id+'/export/vet/summary-pdf')">Vet Summary PDF</button>
+                        <button class="dropdown-item" (click)="downloadFile('/api/runs/'+rnp.run.id+'/export/smp/summary')">SMP Summary</button>
+                    </ul>
+                </div>
+                <div class="dropdown mr-2" dropdown>
+                    <button dropdownToggle class="dropdown-toggle btn btn-sm btn-outline-secondary">Get CSV</button>
+                    <ul *dropdownMenu class="dropdown-menu" role="menu">
+                        <a class="dropdown-item" (click)="downloadFile('/api/runs/'+rnp.run.id+'/export/smp/csv')">SMP Data</a>
+                    </ul>
+                </div>
+                <a class="btn btn-sm btn-outline-info btn-link" [routerLink]="['/home', rnp.run.id, rnp.run.unitId, rnp.patient.id]">Rerun</a>
+            </td>
+        </tr>
+    </tbody>
+</table>

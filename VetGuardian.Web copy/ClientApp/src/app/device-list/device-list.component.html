@@ -1,0 +1,32 @@
+<div style="width:100%">
+    <h1 *ngIf="!devices && !errors">Searching for devices...</h1>
+    <h1 *ngIf="errors">Error fetching devices</h1>
+    <h1 *ngIf="devices && !devices.length">No devices found</h1>
+
+    <div *ngIf="devices && devices.length">
+        <h3>List of Devices</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Serial Number</th>
+                    <th>IP Address</th>
+                    <th>Connection Type</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let device of devices">
+                    <td>{{device.serialNumber}}</td>
+                    <td>{{device.ipAddress}}</td>
+                    <td>{{device.connectionType}}</td>
+                    <td *ngIf="device.unit">
+                        <button class="btn btn-sm btn-outline-secondary" (click)="configureUnit(device)">Configure {{device.unit.name}}</button>
+                    </td>
+                    <td *ngIf="!device.unit">
+                        <button class="btn btn-sm btn-outline-primary" (click)="addUnit(device)">Add New Unit</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,10 @@
+@import '../assets/scss/variables';
+
+.router-wrapper {
+    position: relative;
+    width: 100%;
+    background-color: $gray;
+    border-top: 10px solid $card-cap-bg;
+    overflow-x: hidden;
+    overflow-y: auto;
+}

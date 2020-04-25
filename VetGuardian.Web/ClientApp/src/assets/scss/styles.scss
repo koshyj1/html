@@ -1,0 +1,32 @@
+@import "_variables";
+@import "_units";
+@import "_navbar";
+@import "_status-bar";
+
+@import "~bootstrap/scss/bootstrap";
+
+@import "_modal";
+@import "~ngx-toastr/toastr.css";
+//@import "~ngx-toastr/toastr-bs4-alert.scss";
+
+.form-control {
+    background-color: $form-background;
+    color: #EDECEC;
+    &:focus {
+        background-color: $form-background;
+        color: #FEFDFD;
+    }
+    &:disabled {
+        background-color: #111111;
+        border-color: #888888;
+        color: #999999;
+    }
+}
+
+.clickable {
+    cursor: pointer;
+    &:disabled, &.disabled {
+        cursor: default;
+        color: #6c757d;
+    }
+}

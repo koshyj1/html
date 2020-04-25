@@ -1,0 +1,32 @@
+@import '../../assets/scss/variables';
+
+.log-container {
+    height: 100%;
+    overflow-y: auto;
+    border: 1px solid #303030;
+    padding: 5px;
+    margin-left: 34px;
+}
+
+.log-entry {
+    line-height: 20px;
+    margin-bottom: 20px;
+    &:last-child {
+        margin-bottom: 0px;
+    }
+    &:hover {
+        background-color: #303030;
+    }
+}
+
+.log-header {
+    font-weight: bold;
+}
+
+.log-body {
+    color: $lightest-gray;
+}
+
+.add-note-btn {
+    position: absolute;
+}

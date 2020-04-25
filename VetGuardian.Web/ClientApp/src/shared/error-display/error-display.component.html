@@ -1,0 +1,14 @@
+<div *ngIf="control.errors">
+    <div *ngIf="control.errors.required">
+        The {{name}} field is required.
+    </div>
+    <div *ngIf="control.errors.email">
+        The {{name}} field is not a valid e-mail address.
+    </div>
+    <div *ngIf="control.errors.passwordMatch">
+        Password and Confirm password must match.
+    </div>
+    <div *ngFor="let error of control.errors.messages">
+        {{error}}
+    </div>
+</div>

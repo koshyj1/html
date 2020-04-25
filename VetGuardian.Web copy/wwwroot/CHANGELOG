@@ -1,0 +1,101 @@
+# Changelog
+All notable changes to this project will be documented in this file.
+
+## [0.9.7] - 2019-10-09
+### Changed
+ - Changed FFT calculation windows to 3/6 boundaries
+ - Changed audible alarm to body detect only.
+### Fixed
+
+## [0.9.6] - 2019-10-04
+### Changed
+ - Removed browser caching.
+### Fixed
+ - FFT limits are now updated after a pause/resume.
+
+## [0.9.5] - 2019-10-02
+### Changed
+ - Removed box car detection
+ - Added RR threshold body detection
+ - Condensed navigation bar.
+ - Admin Settings
+  - Added enable body detection option
+  - Added selecting between to body detection algorithms
+### Fixed
+ - Screen jump due to alarm acknowledge
+ - Stop & Pause Button layout
+ - Auto focus admin login prompt.
+
+## [0.9.4] - 2019-09-27
+### Changed
+ - Box car detection tweaks
+
+## [0.9.3] - 2019-09-26
+### Fixed
+ - Reference Arun's DLL updates
+
+## [0.9.2] - 2019-09-26
+### Fixed
+ - Weight bugs
+ - Updated tab labels
+
+## [0.9.1] - 2019-09-26
+### Added
+ - Box car algorithm
+ - Audible alarm
+ - Feedback link
+ - Support link
+
+### Fixed
+ - Pause button bugs
+ - Admin settings cleanup
+ - Unit conversion fixes
+ - Chart fixes
+
+## [0.9.0] - 2019-09-23
+### Added
+ - Patient ID and name while running
+ - Limits while running
+ - Weight to add patient form
+ - Session pause button
+ - FFT plot while running
+
+### Fixed
+ - History page bug
+ - Unit conversion bugs
+ - Varying HR/RR readings
+
+### Changed
+ - Updated validation to require weight > 0
+
+### Removed
+ - Unused admin settings
+
+## [0.8.0] - 2019-07-29
+### Added
+ - Initial electron application
+ - FTP upload service to upload runs in the background with retry logic
+ - Admin Settings page for configuring FFT and FTP settings
+ - RunLog messages for body detected event
+ - Label to weight input
+
+### Fixed
+ - Image numbering order on FTP
+ - Enable Video button causing run to start
+ - CSV timestamp values missing seconds
+ - Timestamps are displayed in local time instead of UTC
+
+### Changed
+ - CSV files are split into 15 minute files when uploading to FTP
+ - Increased font size of vet clinic name in header
+ - Moved "Image" header to second page with image
+ - Start and end time in PDF report show the actual start and end time within the 5 minute buckets
+ - CSV timestamp format updates
+
+### Removed
+ - FFT and FTP settings from appsettings.json
+ - Default units from being created on startup
+ - Vet CSV Export option
+ - I&Q from SMP text summary
+ - Average HR and RR from SMP text summary
+ - Initial delay from device setup

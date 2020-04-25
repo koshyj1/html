@@ -1,0 +1,19 @@
+@import '../../assets//scss/variables';
+
+.dropdown {
+    display: inline-block;
+}
+
+h1 {
+    text-align: center;
+    margin: 0px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+h3 {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+}

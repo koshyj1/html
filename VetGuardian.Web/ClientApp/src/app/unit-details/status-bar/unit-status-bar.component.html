@@ -1,0 +1,53 @@
+<div class="status-bar">
+    <div class="row p-3">
+        <div class="col-2">
+            <h2 class="text-uppercase mt-3">
+                <fa-icon class="{{patientStatusColor}}" [icon]="patientStatusIcon"></fa-icon> {{patientStatusText || '-'}}
+            </h2>
+        </div>
+        <div class="col-1">
+            <button *ngIf="isAlarm && !isAlarmAcknowledged" class="float-left btn btn-outline-success btn-lg mt-2 float-left" (click)="onAcknowledgeAlarm()" [attr.disabled]="isAcquiring ? null : true">Acknowledge</button>
+        </div>
+
+        <div *ngIf="sensorError || cameraError" class="col-3 text-danger">
+            <div class="row">
+                <div class="col-12">
+                    <div *ngIf="sensorError" style="font-size:1.2rem">Error communicating with the sensor.</div>
+                    <div *ngIf="cameraError" style="font-size:1.2rem">Error communicating with the camera.</div>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="!sensorError && !cameraError" class="col-3">
+            <div class="row">
+                <div class="col-5 text-center">
+                    <div class="mt-2 flex-row" style="display:flex; justify-content: space-evenly">
+                        <fa-icon [class.text-male]="sex === 1 || sex === 3" [class.text-female]="sex === 2 || sex === 4" [icon]="speciesIcon" size="3x"></fa-icon>
+                        <div [class.text-male]="sex === 1 || sex === 3" [class.text-female]="sex === 2 || sex === 4" style="font-size:3rem; height:0px; margin-top:-10px">{{sexInitials || '-'}}</div>
+                    </div>
+                </div>
+                <div class="col-7">
+                    <strong class="text-white-50 text-uppercase text-bold d-block">Species</strong>
+                    <h3 class="font-weight-light">{{speciesName}}</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-2">
+            <strong class="text-white-50 text-uppercase text-bold d-block">Patient ID</strong>
+            <h3 class="font-weight-light">{{patientId}}</h3>
+        </div>
+        <div class="col-2">
+            <strong class="text-white-50 text-uppercase text-bold d-block">Pet Name</strong>
+            <h3 class="font-weight-light">{{patientName}}</h3>
+        </div>
+        <div class="col-1">
+            <strong class="text-white-50 text-uppercase text-bold d-block">Time</strong>
+            <h3 class="font-weight-light">{{runTimeString}}</h3>
+        </div>
+        <div class="col-1">
+            <strong class="text-white-50 text-uppercase text-bold d-block">Unit Name</strong>
+            <h3 class="font-weight-light">{{unitName || '-'}}</h3>
+        </div>
+    </div>
+</div>

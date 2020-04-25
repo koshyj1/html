@@ -1,0 +1,50 @@
+// Links
+$link-hover-decoration: none;
+
+// Grid
+$grid-gutter-width: 15px;
+
+// Border-Radius
+$border-radius:     0;
+$border-radius-lg:  0;
+$border-radius-sm:  0;
+
+// Body
+$body-bg:           #0B1014;
+$body-color:        #FEFDFD;
+$dark:              #162A5C;
+
+// Theme colors
+$primary:           #50FF53;
+$secondary:         #42CCFB;
+$danger:            #FE0000;
+$info:              #3E7BFD;
+$gray:              #030406;
+$light-gray:        #404B51;
+$lighter-gray:      #607079;
+$lightest-gray:     #90A8B5;
+
+$form-background:   #24292D;
+$dropdown-link-active-bg: #bcbcbc;
+
+$theme-colors: (
+  gray:             $gray,
+  light-gray:       $light-gray,
+  lighter-gray:     $lighter-gray,
+  lightest-gray:    $lightest-gray,
+  female:           #F97BFF,
+  male:             #7A8DFF
+);
+
+// Navbar
+$navbar-dark-color: #fff;
+
+// Cards
+$card-bg:           #030406;
+$card-cap-bg:       #404B51;
+$card-spacer-y:     .35rem;
+$card-spacer-x:     .75rem;
+$card-border-width: 0;
+$card-border-radius:0;
+$card-inner-border-radius: 0;
+$card-group-margin: ($grid-gutter-width / 2);
